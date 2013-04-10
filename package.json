@@ -1,0 +1,13 @@
+{
+  "name": "billboard",
+  "version": "0.0.0",
+  "description": "API to the screens",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "",
+  "license": "BSD",
+  "readmeFilename": "README.md"
+}
