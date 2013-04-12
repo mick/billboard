@@ -21,7 +21,10 @@ app.get('/api/screens', function(req, res){
   res.send({"screens":list});
 });
 app.post('/api/screens/:name/reload', function(req, res){
-  if(screens[req.params.name] !== undefined){
+
+  if(req.params.name === "all")
+    io.sockets.emit('reload')
+  else if(screens[req.params.name] !== undefined){
 
     for(s in screens[req.params.name]){
       var socket = screens[req.params.name][s];
@@ -32,7 +35,10 @@ app.post('/api/screens/:name/reload', function(req, res){
 });
 app.post('/api/screens/:name', function(req, res){
   console.log(req, req.body);
-  if(screens[req.params.name] !== undefined){
+
+  if(req.params.name === "all")
+    io.sockets.emit('display', req.body);
+  else if(screens[req.params.name] !== undefined){
 
     for(s in screens[req.params.name]){
       var socket = screens[req.params.name][s];
