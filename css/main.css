@@ -305,6 +305,9 @@ img.showImage{
   width:80%;
   position:absolute;
   top:-3000px;
+  transition-property:top;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-out;
 }
 .offscreen.show{ 
   top:30px;

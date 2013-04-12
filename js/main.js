@@ -16,6 +16,10 @@ socket.on('display', function (data) {
 
   $(".offscreen").removeClass("show");
 
+  setTimeout(function(){
+    $(".offscreen").removeClass("show");
+  }, data.maxtime || 3000);
+
   if(data.action === "image"){
     $("img.showImage").attr("src", data.url);
     $("img.showImage").addClass("show");
