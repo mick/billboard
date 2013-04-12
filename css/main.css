@@ -304,8 +304,11 @@ img.showImage{
   max-height:80%;
   width:80%;
   position:absolute;
+  top:-3000px;
+}
+.offscreen.show{ 
   top:30px;
-  
-  display:none;
-  
+  transition-property:top;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-out;
 }
