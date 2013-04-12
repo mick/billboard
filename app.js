@@ -31,7 +31,7 @@ app.post('/api/screens/:name/reload', function(req, res){
   res.send({"status": "ok"});
 });
 app.post('/api/screens/:name', function(req, res){
-
+  console.log(req, req.body);
   if(screens[req.params.name] !== undefined){
 
     for(s in screens[req.params.name]){

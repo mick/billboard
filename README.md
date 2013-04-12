@@ -29,6 +29,16 @@ List the name of screens that are currently available
         ]
     }
 
+####Reload a screen
+Runs `window.location.reload()`, great way to get a screen client to update.
+
+    curl http://localhost:3000/api/screens/:name:/reload
+
+    {   
+      "status": "ok"
+    }
+
+
 #### Set Screen Display
 
 #####Image

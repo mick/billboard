@@ -25,8 +25,10 @@ socket.on('display', function (data) {
   }, data.maxtime || 3000);
 
   if(data.action === "image"){
-    $("img.showImage").attr("src", data.url);
-    $("img.showImage").addClass("show");
+    $("div.showImage").css({"background-image": "url('"+data.url+"')",
+                            "background-size": "contain",
+                            "background-repeat": "no-repeat"});
+    $("div.showImage").addClass("show");
   }
   if(data.action === "iframe"){
     $("iframe.showIFrame").attr("href", data.url);

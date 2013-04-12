@@ -299,18 +299,22 @@ textarea {
     }
 }
 
-img.showImage{ 
-  max-width:80%;
-  max-height:80%;
-  width:80%;
+div.showImage{ 
+}
+
+.offscreen{ 
   position:absolute;
   top:-3000px;
   transition-property:top;
   transition-duration: 0.5s;
   transition-timing-function: ease-out;
 }
+
 .offscreen.show{ 
-  top:30px;
+  top:0px;
+  left:0px;
+  bottom:0px;
+  right:0px;
   transition-property:top;
   transition-duration: 0.5s;
   transition-timing-function: ease-out;
