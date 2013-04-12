@@ -34,6 +34,9 @@ app.post('/api/screens/:name', function(req, res){
   res.send({"status": "ok"});
 });
 
+app.get('/screen/:name', function(req, res){
+  res.sendfile('index.html');
+});
 
 app.use('/', express.static(__dirname + '/')); 
 
