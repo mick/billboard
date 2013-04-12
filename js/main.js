@@ -22,7 +22,7 @@ socket.on('display', function (data) {
 
   setTimeout(function(){
     $(".offscreen").removeClass("show");
-  }, data.maxTime || 3000);
+  }, data.maxTime || 15000);
 
   if(data.action === "image"){
     $("div.showImage").css({"background-image": "url('"+data.url+"')",
