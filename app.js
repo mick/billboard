@@ -58,9 +58,13 @@ io.sockets.on('connection', function (socket) {
     socket.screenName = data.screenName;
   });
   socket.on('disconnect', function () {
-
+    //console.log("disconect", socket, screens[socket.screenName].indexOf(socket))
     if(screens[socket.screenName].indexOf(socket) >=0)
-      delete screens[socket.screenName][screens[socket.screenName].indexOf(socket)];
+      screens[socket.screenName].splice(screens[socket.screenName].indexOf(socket), 1);
+
+    if(screens[socket.screenName].length === 0)
+      delete screens[socket.screenName];
+
     console.log("disconnect");
   });
 });
