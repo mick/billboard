@@ -20,14 +20,22 @@ app.get('/api/screens', function(req, res){
 
   res.send({"screens":list});
 });
+app.post('/api/screens/:name/reload', function(req, res){
+  if(screens[req.params.name] !== undefined){
 
+    for(s in screens[req.params.name]){
+      var socket = screens[req.params.name][s];
+      socket.emit('reload');
+    }
+  }
+  res.send({"status": "ok"});
+});
 app.post('/api/screens/:name', function(req, res){
 
   if(screens[req.params.name] !== undefined){
 
     for(s in screens[req.params.name]){
       var socket = screens[req.params.name][s];
-      console.log(req.body)
       socket.emit('display', req.body);
     }
   }
@@ -48,7 +56,6 @@ io.sockets.on('connection', function (socket) {
       screens[data.screenName] = [];
     screens[data.screenName].push(socket)
     socket.screenName = data.screenName;
-    console.log("connect", data);
   });
   socket.on('disconnect', function () {
 
