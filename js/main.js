@@ -26,7 +26,7 @@ socket.on('display', function (data) {
 
   if(data.action === "image"){
     $("div.showImage").css({"background-image": "url('"+data.url+"')",
-                            "background-size": "cover",
+                            "background-size": "contain",
                             "background-repeat": "no-repeat"});
     $("div.showImage").addClass("show");
   }
