@@ -1,5 +1,4 @@
-
-Billboard.js
+Billboard
 ====
 
 Create an API for your screens.  
