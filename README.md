@@ -1,3 +1,6 @@
+![alt text](https://github.com/dthompson/billboard/raw/master/img/billboard.png "Billboard")
+
+
 Billboard
 ====
 
