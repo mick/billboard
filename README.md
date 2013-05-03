@@ -1,71 +1,84 @@
 ![alt text](https://github.com/dthompson/billboard/raw/master/img/billboard.png "Billboard")
 
 
-Billboard
-====
-
-Create an API for your screens.  
-
-And I quote the great Tony Stark:
+# Billboard
 
     Hold on one second, buddy. Let me see something here.
     Boy, I am good. I commandeered your screens.
     I need them. Time for a little transparency.
+    - Tony Stark
 
+Got screens in your home or office? Wish you could magically zap stuff onto them? Here's an API for that.
 
-Options on all (coming soon):
- * setDefault
- * minTime
- * maxTime
+Simply open a unique URL in a fullscreen web browser on as many or as few screens as you'd like, and issue calls to the  Billboard API. Your content will appear on the screens you've specified, through the magic of node.js and Socket.io.
 
+## Setup 
 
-####List Available Screens
-List the name of screens that are currently available
+1. Deploy a copy of Billboard to a location of your choice. (We like Heroku.)
+2. On a computer connected to a screen, open the following URL: http://{host_location}/screen/{screen_name_of_your_choice}. (We suggest using Google Chrome in fullscreen mode.)
+3. Repeat Step 2 for as many screens as you have. 
+4. Issue calls to the API (see below) and your content appears.
 
-    curl http://localhost:3000/api/screens
+## API Usage
 
+### List Available Screens
+List the names of screens that are currently available:
+
+`curl http://{billboard_instance_url}/api/screens`
+
+response:
+```javascript
     {   
       "screens": [
+        "all", // all currently connected screens
         "right",
         "left"
         ]
     }
+```
 
-####Reload a screen
-Runs `window.location.reload()`, great way to get a screen client to update.
+### Reload a screen
+Runs `window.location.reload()` to force get a screen to update:
 
-    curl http://localhost:3000/api/screens/:name:/reload
+`curl http://{billboard_instance_url}/api/screens/:name:/reload`
 
-    {   
-      "status": "ok"
-    }
+response:
+```javascript
+{   
+  "status": "ok"
+}
+```
 
+### Display content on a screen
 
-#### Set Screen Display
+#### Image
+Show an image on a screen:
 
-#####Image
-drop in full screen image (scaled, unless otherwise specified)
+`curl -X POST -d action=image -d url="<Path to Image>" http://{billboard_instance_url}/api/screens/home`
 
-    curl -X POST -d action=image -d url="<Path to Image>" http://localhost:3000/api/screens/home
+response:
+```javascript
+{
+  "status": "ok"
+}
+```
 
-    {
-      "status": "ok"
-    }
+### Coming Soon:
 
+#### Default content
+Content that shows when other content expires.
 
+#### Minimum and Maximum time
+Show content for a specified length of time.
 
-####Coming Soon:
+#### iframe
+Shows web content within an iframe on the screen.
 
-#####iFrame
-sets the src of fullpage iframe
+#### Video
+Plays a video.
 
-#####Video
-Play video and return to default screen when that is completed.
+##### carousel
+Rotate through content items on  a timer.
 
-#####Carousel
-Set more then 1 default screen, and rotate through them on a timer.
-
-#####Persistence
-Save the display settings in Redis, to persist through server / client restarts
-
-
+#### Persistence
+Save the display settings so that they persist through server / client restarts.
