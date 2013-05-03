@@ -1,29 +1,7 @@
 var socket = io.connect();
 
-
-
-socket.on('connect', function (data) {
-
-  var screenName = window.location.pathname.substring(8);
-  if(screenName === "")
-    screenName = "home"
-
-  socket.emit('screen', { screenName: screenName });
-
-});
-socket.on('reload', function (data) {
-  window.location.reload();
-});
-
-socket.on('display', function (data) {
-
-
-  $(".offscreen").removeClass("show");
-
-  setTimeout(function(){
-    $(".offscreen").removeClass("show");
-  }, data.maxTime || 15000);
-
+var show = function(data) {
+  clear();
   if(data.action === "image"){
     $("div.showImage").css({"background-image": "url('"+data.url+"')",
                             "background-size": "contain",
@@ -45,6 +23,30 @@ socket.on('display', function (data) {
                             +" type='application/x-shockwave-flash' width='425' height='350'></embed></object>");
     $("div.showVideo").addClass("show");
   }
+};
 
+var clear = function() {
+  $(".offscreen").removeClass("show");
+};
 
+socket.on('connect', function (data) {
+
+  var screenName = window.location.pathname.substring(8);
+  if(screenName === "")
+    screenName = "home"
+
+  socket.emit('screen', { screenName: screenName });
+
+});
+
+socket.on('reload', function (data) {
+  window.location.reload();
+});
+
+socket.on('display', function (data) {
+  show(data);
+
+  setTimeout(function(){
+    clear();
+  }, data.maxTime || 15000);
 });
