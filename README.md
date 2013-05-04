@@ -63,6 +63,19 @@ response:
 }
 ```
 
+#### Video
+Plays a a youtube video.
+
+`curl -X POST -d action=video -d url="<Youtube URL>" http://{billboard_instance_url}/api/screens/home`
+
+response:
+```javascript
+{
+  "status": "ok"
+}
+```
+
+
 ### Coming Soon:
 
 #### Default content
@@ -73,9 +86,6 @@ Show content for a specified length of time.
 
 #### iframe
 Shows web content within an iframe on the screen.
-
-#### Video
-Plays a video.
 
 ##### carousel
 Rotate through content items on  a timer.
