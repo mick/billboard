@@ -93,8 +93,6 @@ io.sockets.on('connection', function (socket) {
   socket.on('disconnect', function () {
     if(screens[socket.screenName].sockets.indexOf(socket) >=0)
       screens[socket.screenName].sockets.splice(screens[socket.screenName].sockets.indexOf(socket), 1);
-
-    console.log("disconnect");
   });
 });
 

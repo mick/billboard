@@ -19,10 +19,30 @@ var show = function(data) {
     // To start only support youtube, but it would be great to return to the deault 
     // at the end of the video.
 
-    $("div.showVideo").html("<object width='425' height='350'><param name='movie' "+
-                            "value='http://www.youtube.com/v/OdT9z-JjtJk&autoplay=1'>"+
-                            "</param><embed src='http://www.youtube.com/v/OdT9z-JjtJk&autoplay=1'"+
-                            +" type='application/x-shockwave-flash' width='425' height='350'></embed></object>");
+    var video_id = data.url.split('v=')[1];
+    var ampersandPosition = video_id.indexOf('&');
+    if(ampersandPosition != -1) {
+      video_id = video_id.substring(0, ampersandPosition);
+    }
+
+    var height = $(window).height();
+
+    window.onYouTubePlayerReady = function(playerId) {
+      ytplayer = document.getElementById("ytplayer");
+      ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
+      ytplayer.playVideo();
+    }
+
+    window.onytplayerStateChange = function(newState) {
+      console.log("Player's new state: " , newState);
+      if(newState ===  0)
+        $("div.showVideo").removeClass("show");
+    }
+
+    swfobject.embedSWF('http://www.youtube.com/v/' + video_id + '?enablejsapi=1&playerapiid=ytplayer&version=3',
+                       'ytapiplayer', '100%', height, '8', null, null, 
+                       { allowScriptAccess: 'always' }, { id: 'ytplayer' }); 
+
     $("div.showVideo").addClass("show");
   }
 };
