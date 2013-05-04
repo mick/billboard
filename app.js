@@ -34,7 +34,6 @@ app.post('/api/screens/:name/reload', function(req, res){
   res.send({"status": "ok"});
 });
 app.post('/api/screens/:name', function(req, res){
-  console.log(req, req.body);
 
   if(req.params.name === "all")
     io.sockets.emit('display', req.body);
@@ -64,14 +63,12 @@ io.sockets.on('connection', function (socket) {
     socket.screenName = data.screenName;
   });
   socket.on('disconnect', function () {
-    //console.log("disconect", socket, screens[socket.screenName].indexOf(socket))
     if(screens[socket.screenName].indexOf(socket) >=0)
       screens[socket.screenName].splice(screens[socket.screenName].indexOf(socket), 1);
 
     if(screens[socket.screenName].length === 0)
       delete screens[socket.screenName];
 
-    console.log("disconnect");
   });
 });
 
