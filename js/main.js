@@ -1,5 +1,7 @@
 var socket = io.connect();
 
+var defaultContent;
+
 var show = function(data) {
   clear();
   if(data.action === "image"){
@@ -46,7 +48,14 @@ socket.on('reload', function (data) {
 socket.on('display', function (data) {
   show(data);
 
+  if (data.default === "true") {
+    defaultContent = data;
+  }
+
   setTimeout(function(){
-    clear();
+    clear()
+    if(defaultContent !== undefined) {
+      show(defaultContent);
+    }
   }, data.maxTime || 15000);
 });
