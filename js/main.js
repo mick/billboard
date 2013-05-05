@@ -1,29 +1,9 @@
 var socket = io.connect();
 
+var defaultContent;
 
-
-socket.on('connect', function (data) {
-
-  var screenName = window.location.pathname.substring(8);
-  if(screenName === "")
-    screenName = "home"
-
-  socket.emit('screen', { screenName: screenName });
-
-});
-socket.on('reload', function (data) {
-  window.location.reload();
-});
-
-socket.on('display', function (data) {
-
-
-  $(".offscreen").removeClass("show");
-
-  setTimeout(function(){
-    $(".offscreen").removeClass("show");
-  }, data.maxTime || 15000);
-
+var show = function(data) {
+  clear();
   if(data.action === "image"){
     $("div.showImage").css({"background-image": "url('"+data.url+"')",
                             "background-size": "contain",
@@ -65,5 +45,37 @@ socket.on('display', function (data) {
 
     $("div.showVideo").addClass("show");
   }
+};
 
+var clear = function() {
+  $(".offscreen").removeClass("show");
+};
+
+socket.on('connect', function (data) {
+
+  var screenName = window.location.pathname.substring(8);
+  if(screenName === "")
+    screenName = "home"
+
+  socket.emit('screen', { screenName: screenName });
+
+});
+
+socket.on('reload', function (data) {
+  window.location.reload();
+});
+
+socket.on('display', function (data) {
+  show(data);
+
+  if (data.default === "true") {
+    defaultContent = data;
+  }
+
+  setTimeout(function(){
+    clear()
+    if(defaultContent !== undefined) {
+      show(defaultContent);
+    }
+  }, data.maxTime || 15000);
 });
