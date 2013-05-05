@@ -26,7 +26,8 @@ app.get('/api/screens', function(req, res){
   var list = [];
 
   for(s in screens){
-    list.push(s);
+    if(screens[s].sockets.length !== 0)
+      list.push(s);
   }
 
   res.send({"screens":list});
@@ -47,7 +48,6 @@ app.post('/api/screens/:name/reload', function(req, res){
 });
 
 app.post('/api/screens/:name', function(req, res){
-  console.log(req, req.body);
   var screenName = req.params.name;
 
   if(req.body.default === "true") {
@@ -86,7 +86,6 @@ io.sockets.on('connection', function (socket) {
 
     // push default out if there is one for the screen
     if (screens[data.screenName].default !== undefined) {
-      console.log("HERE");
       socket.emit('display', screens[data.screenName].default);
     }
   });
