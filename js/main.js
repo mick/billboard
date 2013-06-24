@@ -11,8 +11,8 @@ var show = function(data) {
     $("div.showImage").addClass("show");
   }
   if(data.action === "iframe"){
-    $("iframe.showIFrame").attr("href", data.url);
-    $("iframe.showIFrame").addClass("show");
+    $("div.showIFrame").html("<iframe frameborder='0' src='"+data.url+"' />");
+    $("div.showIFrame").addClass("show");
   }
   if(data.action === "video"){
     // This one is going to be a bit more complex.

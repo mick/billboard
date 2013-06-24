@@ -301,6 +301,14 @@ textarea {
 
 div.showImage{ 
 }
+div.showIFrame{ 
+  width:100%;
+  height:100%;
+}
+div.showIFrame iframe{
+  width:100%;
+  height:100%;  
+}  
 
 .offscreen{ 
   position:absolute;
