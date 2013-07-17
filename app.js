@@ -21,6 +21,13 @@ var saveDefault = function(screenName, data) {
   }
 };
 
+app.all('*', function(req, res, next) {
+  // allow request from other sites with cors
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
+
 app.get('/api/screens', function(req, res){
   //list screens along with current status
   var list = [];
