@@ -3,15 +3,18 @@ var socket = io.connect();
 var defaultContent;
 
 var show = function(data) {
+  var imageRegex = /.+(jpg|jpeg|gif|png)$/;
+  var videoRegex = /.+youtube\.com\/watch.+/;
+
   clear();
-  if(data.action === "image"){
+  if(data.action === "image" || imageRegex.test(data.url)){
     showImage(data);
+  }
+  if(data.action === "video" || videoRegex.test(data.url)){
+    showVideo(data);
   }
   if(data.action === "iframe"){
     showIFrame(data);
-  }
-  if(data.action === "video"){
-    showVideo(data);
   }
 };
 
