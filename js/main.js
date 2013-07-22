@@ -3,17 +3,35 @@ var socket = io.connect();
 var defaultContent;
 
 var show = function(data) {
+  clear();
+
+  if (data.action !== undefined) {
+    executeAction(data.action, data);
+  } else if(data.url !== undefined) {
+    executeAction(guessActionByUrl(data.url), data);
+  }
+};
+
+var guessActionByUrl = function(url) {
   var imageRegex = /.+(jpg|jpeg|gif|png)$/;
   var videoRegex = /.+youtube\.com\/watch.+/;
 
-  clear();
-  if(data.action === "image" || imageRegex.test(data.url)){
+  if (imageRegex.test(url)) {
+    return "image";
+  }
+  if (videoRegex.test(url)) {
+    return "video";
+  }
+};
+
+var executeAction = function(action, data) {
+  if(action === "image"){
     showImage(data);
   }
-  if(data.action === "video" || videoRegex.test(data.url)){
+  if(action === "video"){
     showVideo(data);
   }
-  if(data.action === "iframe"){
+  if(action === "iframe"){
     showIFrame(data);
   }
 };
