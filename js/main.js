@@ -4,7 +4,6 @@ var defaultContent;
 
 var show = function(data) {
   clear();
-
   if (data.action !== undefined) {
     executeAction(data.action, data);
   } else if(data.url !== undefined) {
@@ -37,9 +36,7 @@ var executeAction = function(action, data) {
 };
 
 var showImage = function(data) {
-  $("div.showImage").css({"background-image": "url('"+data.url+"')",
-                          "background-size": "contain",
-                          "background-repeat": "no-repeat"});
+  $("div.showImage").css({"background-image": "url('" + data.url + "')"});
   $("div.showImage").addClass("show");
 };
 
