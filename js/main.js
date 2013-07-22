@@ -5,9 +5,7 @@ var defaultContent;
 var show = function(data) {
   clear();
   if(data.action === "image"){
-    $("div.showImage").css({"background-image": "url('"+data.url+"')",
-                            "background-size": "contain",
-                            "background-repeat": "no-repeat"});
+    $("div.showImage").css({"background-image": "url('" + data.url + "')"});
     $("div.showImage").addClass("show");
   }
   if(data.action === "iframe"){

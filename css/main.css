@@ -299,7 +299,17 @@ textarea {
     }
 }
 
-div.showImage{ 
+html {
+  background-color: #000;
+}
+
+div.showImage{
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width:100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 div.showIFrame{ 
   width:100%;
@@ -326,11 +336,4 @@ div.showIFrame iframe{
   transition-property:top;
   transition-duration: 0.5s;
   transition-timing-function: ease-out;
-}
-
-div.billboard{ 
-  height:574px;
-  width:800px;
-  margin:100px auto 0px;  
-  background:url('/img/billboard.png') no-repeat;
 }
