@@ -21,6 +21,7 @@ var guessActionByUrl = function(url) {
   if (videoRegex.test(url)) {
     return "video";
   }
+  return null;
 };
 
 var executeAction = function(action, data) {
@@ -31,6 +32,9 @@ var executeAction = function(action, data) {
     showVideo(data);
   }
   if(action === "iframe"){
+    showIFrame(data);
+  } else {
+    // If there's no action, assume it's an iframe.
     showIFrame(data);
   }
 };
