@@ -4,45 +4,79 @@ var defaultContent;
 
 var show = function(data) {
   clear();
-  if(data.action === "image"){
-    $("div.showImage").css({"background-image": "url('" + data.url + "')"});
-    $("div.showImage").addClass("show");
+  if (data.action !== undefined) {
+    executeAction(data.action, data);
+  } else if(data.url !== undefined) {
+    executeAction(guessActionByUrl(data.url), data);
   }
-  if(data.action === "iframe"){
-    $("div.showIFrame").html("<iframe frameborder='0' src='"+data.url+"' />");
-    $("div.showIFrame").addClass("show");
+};
+
+var guessActionByUrl = function(url) {
+  var imageRegex = /.+(jpg|jpeg|gif|png)$/;
+  var videoRegex = /.+youtube\.com\/watch.+/;
+
+  if (imageRegex.test(url)) {
+    return "image";
   }
-  if(data.action === "video"){
-    // This one is going to be a bit more complex.
-    // To start only support youtube, but it would be great to return to the deault 
-    // at the end of the video.
-
-    var video_id = data.url.split('v=')[1];
-    var ampersandPosition = video_id.indexOf('&');
-    if(ampersandPosition != -1) {
-      video_id = video_id.substring(0, ampersandPosition);
-    }
-
-    var height = $(window).height();
-
-    window.onYouTubePlayerReady = function(playerId) {
-      ytplayer = document.getElementById("ytplayer");
-      ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
-      ytplayer.playVideo();
-    }
-
-    window.onytplayerStateChange = function(newState) {
-      console.log("Player's new state: " , newState);
-      if(newState ===  0)
-        $("div.showVideo").removeClass("show");
-    }
-
-    swfobject.embedSWF('http://www.youtube.com/v/' + video_id + '?enablejsapi=1&playerapiid=ytplayer&version=3',
-                       'ytapiplayer', '100%', height, '8', null, null, 
-                       { allowScriptAccess: 'always' }, { id: 'ytplayer' }); 
-
-    $("div.showVideo").addClass("show");
+  if (videoRegex.test(url)) {
+    return "video";
   }
+  return null;
+};
+
+var executeAction = function(action, data) {
+  if(action === "image"){
+    showImage(data);
+  } else if(action === "video"){
+    showVideo(data);
+  } else if(action === "iframe"){
+    showIFrame(data);
+  } else {
+    // If there's no action, assume it's an iframe.
+    showIFrame(data);
+  }
+};
+
+var showImage = function(data) {
+  $("div.showImage").css({"background-image": "url('" + data.url + "')"});
+  $("div.showImage").addClass("show");
+};
+
+var showIFrame = function(data) {
+  $("div.showIFrame").html("<iframe frameborder='0' src='"+data.url+"' />");
+  $("div.showIFrame").addClass("show");
+};
+
+var showVideo = function(data) {
+  // This one is going to be a bit more complex.
+  // To start only support youtube, but it would be great to return to the deault 
+  // at the end of the video.
+
+  var video_id = data.url.split('v=')[1];
+  var ampersandPosition = video_id.indexOf('&');
+  if(ampersandPosition != -1) {
+    video_id = video_id.substring(0, ampersandPosition);
+  }
+
+  var height = $(window).height();
+
+  window.onYouTubePlayerReady = function(playerId) {
+    ytplayer = document.getElementById("ytplayer");
+    ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
+    ytplayer.playVideo();
+  };
+
+  window.onytplayerStateChange = function(newState) {
+    console.log("Player's new state: " , newState);
+    if(newState ===  0)
+      $("div.showVideo").removeClass("show");
+  };
+
+  swfobject.embedSWF('http://www.youtube.com/v/' + video_id + '?enablejsapi=1&playerapiid=ytplayer&version=3',
+                     'ytapiplayer', '100%', height, '8', null, null, 
+                     { allowScriptAccess: 'always' }, { id: 'ytplayer' }); 
+
+  $("div.showVideo").addClass("show");
 };
 
 var clear = function() {
@@ -71,7 +105,7 @@ socket.on('display', function (data) {
   }
 
   setTimeout(function(){
-    clear()
+    clear();
     if(defaultContent !== undefined) {
       show(defaultContent);
     }
