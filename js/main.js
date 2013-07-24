@@ -27,11 +27,9 @@ var guessActionByUrl = function(url) {
 var executeAction = function(action, data) {
   if(action === "image"){
     showImage(data);
-  }
-  if(action === "video"){
+  } else if(action === "video"){
     showVideo(data);
-  }
-  if(action === "iframe"){
+  } else if(action === "iframe"){
     showIFrame(data);
   } else {
     // If there's no action, assume it's an iframe.
