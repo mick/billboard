@@ -92,7 +92,7 @@ app.post('/api/screens/:name', function(req, res){
   res.send({"status": "ok"});
 });
 
-app.get('/screen/:name', function(req, res){
+app.get('/screen[s]?/:name', function(req, res){
   res.sendfile('static/index.html');
 });
 

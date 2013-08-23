@@ -15,7 +15,7 @@ Simply open a unique URL in a fullscreen web browser on as many or as few screen
 ## Setup 
 
 1. Deploy a copy of Billboard to a location of your choice. (We like Heroku.)
-2. On a computer connected to a screen, open the following URL: http://{host_location}/screen/{screen_name_of_your_choice}. (We suggest using Google Chrome in fullscreen mode.)
+2. On a computer connected to a screen, open the following URL: http://{host_location}/screens/{screen_name_of_your_choice}. (We suggest using Google Chrome in fullscreen mode.)
 3. Repeat Step 2 for as many screens as you have. 
 4. Issue calls to the API (see below) and your content appears.
 
