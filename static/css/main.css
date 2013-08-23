@@ -341,4 +341,54 @@ div.content iframe{
   transition-timing-function: ease-out;
 }
 
+.settings-container{ 
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  
+}
+
+.settings-menu{ 
+  width:340px;
+  margin:200px auto 0px;
+  border:solid 4px #666;
+  border-radius: 5px;
+  padding:30px;
+  background:#fff;
+}
+.settings-menu h4{ 
+  margin:2px 0px;
+  font-size:22px;
+}
+.settings-menu p, .settings-menu label{ 
+  margin:2px 0px;
+  color:#999;
+  font-size:12px;
+}
+.settings-menu label{ 
+  margin-right:10px;
+}
+.settings-menu textarea{ 
+  width:340px;
+  height:60px;
+  border:solid 1px #ccc;
+  margin:10px 0px 20px;
+}
+.settings-menu select{
+  margin-top:5px;
+  width:120px;
+} 
+.btn{ 
+  background:#308bce;
+  color:#fff;
+  padding: 5px 10px;
+  border-radius:5px;
+  float:right;
+  cursor:pointer;
+}
+.btn:hover{ 
+  background:#409bde;
+}
 
