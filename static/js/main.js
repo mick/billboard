@@ -4,13 +4,17 @@ var defaultContent;
 
 var show = function(data) {
   clear();
-  if (data.action !== undefined) {
-    executeAction(data.action, data);
-  } else if(data.content !== undefined) {
-    executeAction(guessActionByContent(data.content), data);
-  }
+  executeAction(contentType(data), data);
 };
 
+var contentType = function(data){
+  if (data.action !== undefined) {
+    return data.action;
+  } else if(data.content !== undefined) {
+    return guessActionByContent(data.content);
+  }
+
+}
 var guessActionByContent = function(content) {
   var imageRegex = /.+(jpg|jpeg|gif|png)$/;
   var videoRegex = /.+youtube\.com\/watch.+/;
@@ -38,9 +42,6 @@ var executeAction = function(action, data) {
     showIFrame(data);
   } else if(action === "text"){
     showText(data);
-  }else {
-    // If there's no action, assume it's an iframe.
-    showIFrame(data);
   }
 };
 
@@ -123,12 +124,14 @@ socket.on('display', function (data) {
     defaultContent = data;
   }
 
-  setTimeout(function(){
-    clear();
-    if(defaultContent !== undefined) {
-      show(defaultContent);
-    }
-  }, data.maxTime || 15000);
+  if(contentType(data) !== "video"){
+    setTimeout(function(){
+      clear();
+      if(defaultContent !== undefined) {
+        show(defaultContent);
+      }
+    }, data.maxTime || 15000);
+  }
 });
 
 $(function(){
