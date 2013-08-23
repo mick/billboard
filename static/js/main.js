@@ -153,6 +153,13 @@ $(function(){
 
   });
 
+  $(".settings-menu .close").click(function(){
+    $(".settings-container").hide();
+  });
+  $(".settings-menu-btn").click(function(){
+    $(".settings-container").show();
+  });
+
   $.ajax("/api/screens", {success:function(data){
     console.log("screens:", data);
     for(s in data.screens){
@@ -161,7 +168,16 @@ $(function(){
 
   }});
 
+  var settingTimeout =0;
+  $(window).mousemove(function(){
+    console.log("mouse")
+    $(".settings-menu-btn").addClass("show");
+    clearTimeout(settingTimeout);
+    settingTimeout= setTimeout(function(){
+      $(".settings-menu-btn").removeClass("show");
+    }, 3000);
 
+  })
 
 
 })
