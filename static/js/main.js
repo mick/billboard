@@ -4,24 +4,33 @@ var defaultContent;
 
 var show = function(data) {
   clear();
-  if (data.action !== undefined) {
-    executeAction(data.action, data);
-  } else if(data.url !== undefined) {
-    executeAction(guessActionByUrl(data.url), data);
-  }
+  executeAction(contentType(data), data);
 };
 
-var guessActionByUrl = function(url) {
+var contentType = function(data){
+  if (data.action !== undefined) {
+    return data.action;
+  } else if(data.content !== undefined) {
+    return guessActionByContent(data.content);
+  }
+
+}
+var guessActionByContent = function(content) {
   var imageRegex = /.+(jpg|jpeg|gif|png)$/;
   var videoRegex = /.+youtube\.com\/watch.+/;
+  var urlRegex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
 
-  if (imageRegex.test(url)) {
+
+  if (imageRegex.test(content)) {
     return "image";
   }
-  if (videoRegex.test(url)) {
+  if (videoRegex.test(content)) {
     return "video";
   }
-  return null;
+  if (urlRegex.test(content)){
+    return "iframe"
+  }
+  return "text";
 };
 
 var executeAction = function(action, data) {
@@ -33,25 +42,22 @@ var executeAction = function(action, data) {
     showIFrame(data);
   } else if(action === "text"){
     showText(data);
-  }else {
-    // If there's no action, assume it's an iframe.
-    showIFrame(data);
   }
 };
 
 var showImage = function(data) {
-  $("div.content").css({"background-image": "url('" + data.url + "')"});
+  $("div.content").css({"background-image": "url('" + data.content + "')"});
   $("div.content").addClass("show");
 };
 
 var showIFrame = function(data) {
-  $("div.content").html("<iframe frameborder='0' src='"+data.url+"' />");
+  $("div.content").html("<iframe frameborder='0' src='"+data.content+"' />");
   $("div.content").addClass("show");
 };
 
 var showText = function(data) {
 
-  var $h1 = $("<h1 class='text-content'></h1>").text(data.text);
+  var $h1 = $("<h1 class='text-content'></h1>").text(data.content);
 
   $("div.content").html($h1);
   $("div.content").addClass("show");
@@ -66,7 +72,7 @@ var showVideo = function(data) {
 
   $("div.content").html("<div id='ytapiplayer'></div>");
 
-  var video_id = data.url.split('v=')[1];
+  var video_id = data.content.split('v=')[1];
   var ampersandPosition = video_id.indexOf('&');
   if(ampersandPosition != -1) {
     video_id = video_id.substring(0, ampersandPosition);
@@ -83,18 +89,20 @@ var showVideo = function(data) {
   window.onytplayerStateChange = function(newState) {
     console.log("Player's new state: " , newState);
     if(newState ===  0)
-      $("div.showVideo").removeClass("show");
+      $("div.content").removeClass("show");
   };
 
   swfobject.embedSWF('http://www.youtube.com/v/' + video_id + '?enablejsapi=1&playerapiid=ytplayer&version=3',
                      'ytapiplayer', '100%', height, '8', null, null, 
                      { allowScriptAccess: 'always' }, { id: 'ytplayer' }); 
 
-  $("div.showVideo").addClass("show");
+  $("div.content").addClass("show");
 };
 
 var clear = function() {
   $(".offscreen").removeClass("show");
+  $("div.content").html("");
+  $("div.content").css({"background-image": ""});
 };
 
 socket.on('connect', function (data) {
@@ -118,10 +126,60 @@ socket.on('display', function (data) {
     defaultContent = data;
   }
 
-  setTimeout(function(){
-    clear();
-    if(defaultContent !== undefined) {
-      show(defaultContent);
-    }
-  }, data.maxTime || 15000);
+  if(contentType(data) !== "video"){
+    setTimeout(function(){
+      clear();
+      if(defaultContent !== undefined) {
+        show(defaultContent);
+      }
+    }, data.maxTime || 15000);
+  }
 });
+
+$(function(){
+
+  $(".settings-menu .post-content").click(function(){
+
+
+    var data= {content:$("#content").val()};
+
+    if($("#setdefault").is(":checked")){
+      data["default"] = "true";
+    }
+    var screen  = $("#screen").val();
+
+
+    $.ajax("/api/screens/"+screen, {data:data, method:"POST", success:function(data){
+      console.log("ret: ",data);
+    }});
+
+  });
+
+  $(".settings-menu .close").click(function(){
+    $(".settings-container").hide();
+  });
+  $(".settings-menu-btn").click(function(){
+    $(".settings-container").show();
+  });
+
+  $.ajax("/api/screens", {success:function(data){
+    console.log("screens:", data);
+    for(s in data.screens){
+      $("#screen").append("<option value='"+data.screens[s]+"'>"+data.screens[s]+"</option>")
+    }
+
+  }});
+
+  var settingTimeout =0;
+  $(window).mousemove(function(){
+    console.log("mouse")
+    $(".settings-menu-btn").addClass("show");
+    clearTimeout(settingTimeout);
+    settingTimeout= setTimeout(function(){
+      $(".settings-menu-btn").removeClass("show");
+    }, 3000);
+
+  })
+
+
+})

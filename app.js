@@ -76,6 +76,10 @@ app.post('/api/screens/:name/reload', function(req, res){
 app.post('/api/screens/:name', function(req, res){
   var screenName = req.params.name;
 
+  if(req.body.content === undefined)
+    req.body.content = req.body.url;
+
+
   if(req.body.default === "true") {
     saveDefault(screenName, req.body);
   }
