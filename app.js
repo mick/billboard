@@ -1,4 +1,6 @@
 var express = require("express"),
+    redis = require("redis"),
+    client = redis.createClient(),
     app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server);
@@ -8,16 +10,32 @@ server.listen(process.env.PORT || 3000);
 app.use(express.bodyParser());
 
 
+client.on("error", function (err) {
+  console.log("Error " + err);
+});
+
+
 var screens = {};
+client.hgetall("screens", function (err, savedScreens) {
+    for(s in savedScreens){
+      if(screens[s] === undefined){
+        screens[s] = {};
+      }
+      screens[s].default = JSON.parse(savedScreens[s]);
+    }
+});
 
 var saveDefault = function(screenName, data) {
+  console.log("save def", screenName, data);
   if(screenName === "all") {
     for(screen in screens){
-      screen.default = data;
+      screens[screen].default = data;
+      client.hset("screens", screen, JSON.stringify(data));
     }
   } else if((screenName !== undefined) && (screens[screenName] !== undefined)) {
-    console.log(screens);
+    console.log("screens", screens);
     screens[screenName].default = data;
+    client.hset("screens", screenName, JSON.stringify(data));
   }
 };
 
@@ -33,7 +51,7 @@ app.get('/api/screens', function(req, res){
   var list = [];
 
   for(s in screens){
-    if(screens[s].sockets.length !== 0)
+    if((screens[s].sockets != undefined) && (screens[s].sockets.length !== 0))
       list.push(s);
   }
 
@@ -74,7 +92,7 @@ app.post('/api/screens/:name', function(req, res){
 });
 
 app.get('/screen/:name', function(req, res){
-  res.sendfile('index.html');
+  res.sendfile('static/index.html');
 });
 
 app.use('/', express.static(__dirname + '/static/')); 
