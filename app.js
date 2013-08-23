@@ -77,7 +77,7 @@ app.get('/screen/:name', function(req, res){
   res.sendfile('index.html');
 });
 
-app.use('/', express.static(__dirname + '/')); 
+app.use('/', express.static(__dirname + '/static/')); 
 
 io.sockets.on('connection', function (socket) {
 
