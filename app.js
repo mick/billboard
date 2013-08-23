@@ -1,6 +1,9 @@
-var express = require("express"),
+var url = require('url'),
+    express = require("express"),
+    redisURL = url.parse(process.env.REDIS_URL || "redis://redis:pass@localhost:6379"),
     redis = require("redis"),
-    client = redis.createClient(),
+    client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
+    client.auth(redisURL.auth.split(":")[1]);
     app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server);
@@ -26,14 +29,12 @@ client.hgetall("screens", function (err, savedScreens) {
 });
 
 var saveDefault = function(screenName, data) {
-  console.log("save def", screenName, data);
   if(screenName === "all") {
     for(screen in screens){
       screens[screen].default = data;
       client.hset("screens", screen, JSON.stringify(data));
     }
   } else if((screenName !== undefined) && (screens[screenName] !== undefined)) {
-    console.log("screens", screens);
     screens[screenName].default = data;
     client.hset("screens", screenName, JSON.stringify(data));
   }
