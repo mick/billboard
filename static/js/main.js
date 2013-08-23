@@ -31,26 +31,40 @@ var executeAction = function(action, data) {
     showVideo(data);
   } else if(action === "iframe"){
     showIFrame(data);
-  } else {
+  } else if(action === "text"){
+    showText(data);
+  }else {
     // If there's no action, assume it's an iframe.
     showIFrame(data);
   }
 };
 
 var showImage = function(data) {
-  $("div.showImage").css({"background-image": "url('" + data.url + "')"});
-  $("div.showImage").addClass("show");
+  $("div.content").css({"background-image": "url('" + data.url + "')"});
+  $("div.content").addClass("show");
 };
 
 var showIFrame = function(data) {
-  $("div.showIFrame").html("<iframe frameborder='0' src='"+data.url+"' />");
-  $("div.showIFrame").addClass("show");
+  $("div.content").html("<iframe frameborder='0' src='"+data.url+"' />");
+  $("div.content").addClass("show");
 };
+
+var showText = function(data) {
+
+  var $h1 = $("<h1 class='text-content'></h1>").text(data.text);
+
+  $("div.content").html($h1);
+  $("div.content").addClass("show");
+};
+
 
 var showVideo = function(data) {
   // This one is going to be a bit more complex.
   // To start only support youtube, but it would be great to return to the deault 
   // at the end of the video.
+
+
+  $("div.content").html("<div id='ytapiplayer'></div>");
 
   var video_id = data.url.split('v=')[1];
   var ampersandPosition = video_id.indexOf('&');

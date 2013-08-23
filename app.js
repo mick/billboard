@@ -15,7 +15,7 @@ var saveDefault = function(screenName, data) {
     for(screen in screens){
       screen.default = data;
     }
-  } else if(screenName !== undefined) {
+  } else if((screenName !== undefined) && (screens[screenName] !== undefined)) {
     console.log(screens);
     screens[screenName].default = data;
   }
