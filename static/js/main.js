@@ -142,7 +142,7 @@ $(function(){
     var data= {content:$("#content").val()};
 
     if($("#setdefault").is(":checked")){
-      data["default"] - "true";
+      data["default"] = "true";
     }
     var screen  = $("#screen").val();
 
