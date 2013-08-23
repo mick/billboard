@@ -101,6 +101,8 @@ var showVideo = function(data) {
 
 var clear = function() {
   $(".offscreen").removeClass("show");
+  $("div.content").html("");
+  $("div.content").css({"background-image": ""});
 };
 
 socket.on('connect', function (data) {
