@@ -13,6 +13,34 @@ Simply open a unique URL in a fullscreen web browser on as many or as few screen
 
 ## API Usage
 
+### Display content on a screen
+
+You can several types of content.
+
+  - *Images* If you pass the url to an image (must end in .jpg, .jpeg, .gif, .png) it will be displayed full screen.
+  - *Youtube* If you pass a url that looks like it is to a youtube video, it will attempt to play it, a revert back to default content once the video is done.
+  - *Iframe* If you pass any other url, it will be displayed in an full screen iframe
+  - *Text* Any other text will be displayed as white text with a black background.
+
+`curl -X POST -d content="<Path to Image/Youtube/Iframe or Text>" http://{billboard_instance_url}/api/screens/home`
+
+You can *force* how to handle the content by adding the `action` param.
+
+`curl -X POST -d action=image -d content="<Path to Image" http://{billboard_instance_url}/api/screens/home`
+
+To make the content the *default*. It reverts to the default after showing other content. set `default=true` 
+
+`curl -X POST -d defult=true -d content="<Path to Image" http://{billboard_instance_url}/api/screens/home`
+
+
+response:
+```javascript
+{
+  "status": "ok"
+}
+```
+
+
 ### List Available Screens
 List the names of screens that are currently available:
 
@@ -41,46 +69,11 @@ response:
 }
 ```
 
-### Display content on a screen
+##Use the built in client to change the content.
 
-#### Image
-Show an image on a screen:
+![billboard screenshot](https://f.cloud.github.com/assets/26278/1030113/d0a682ae-0eaa-11e3-88d5-b5a435f580ec.png)
 
-`curl -X POST -d action=image -d url="<Path to Image>" http://{billboard_instance_url}/api/screens/home`
+If you browse to any screen `http://{billboard_instance_url}/screens/{screen_name}` you can edit the content directly 
+from that screen. Simply click the gear to open the screen control. Then paste your image, youtube or other webpage 
+link. Or just type some text to share with your coworkers.
 
-response:
-```javascript
-{
-  "status": "ok"
-}
-```
-
-#### Video
-Plays a a youtube video.
-
-`curl -X POST -d action=video -d url="<Youtube URL>" http://{billboard_instance_url}/api/screens/home`
-
-response:
-```javascript
-{
-  "status": "ok"
-}
-```
-
-
-### Coming Soon:
-
-#### Default content
-Content that shows when other content expires.
-
-#### Minimum and Maximum time
-Show content for a specified length of time.
-
-#### iframe
-Shows web content within an iframe on the screen.
-
-##### carousel
-Rotate through content items on  a timer.
-
-#### Persistence
-Save the display settings so that they persist through server / client restarts.
