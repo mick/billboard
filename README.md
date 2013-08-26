@@ -1,12 +1,4 @@
-![alt text](https://github.com/dthompson/billboard/raw/master/img/billboard.png "Billboard")
-
-
 # Billboard
-
-    Hold on one second, buddy. Let me see something here.
-    Boy, I am good. I commandeered your screens.
-    I need them. Time for a little transparency.
-    - Tony Stark
 
 Got screens in your home or office? Wish you could magically zap stuff onto them? Here's an API for that.
 
