@@ -17,18 +17,18 @@ Simply open a unique URL in a fullscreen web browser on as many or as few screen
 
 You can several types of content.
 
-  - *Images* If you pass the url to an image (must end in .jpg, .jpeg, .gif, .png) it will be displayed full screen.
-  - *Youtube* If you pass a url that looks like it is to a youtube video, it will attempt to play it, a revert back to default content once the video is done.
-  - *Iframe* If you pass any other url, it will be displayed in an full screen iframe
-  - *Text* Any other text will be displayed as white text with a black background.
+  - **Images** If you pass the url to an image (must end in .jpg, .jpeg, .gif, .png) it will be displayed full screen.
+  - **Youtube** If you pass a url that looks like it is to a youtube video, it will attempt to play it, a revert back to default content once the video is done.
+  - **Iframe** If you pass any other url, it will be displayed in an full screen iframe
+  - **Text** Any other text will be displayed as white text with a black background.
 
 `curl -X POST -d content="<Path to Image/Youtube/Iframe or Text>" http://{billboard_instance_url}/api/screens/home`
 
-You can *force* how to handle the content by adding the `action` param.
+You can **force** how to handle the content by adding the `action` param.
 
 `curl -X POST -d action=image -d content="<Path to Image" http://{billboard_instance_url}/api/screens/home`
 
-To make the content the *default*. It reverts to the default after showing other content. set `default=true` 
+To make the content the **default**. It reverts to the default after showing other content. set `default=true` 
 
 `curl -X POST -d defult=true -d content="<Path to Image" http://{billboard_instance_url}/api/screens/home`
 
