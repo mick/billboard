@@ -83,6 +83,7 @@ var showVideo = function(data) {
   window.onYouTubePlayerReady = function(playerId) {
     ytplayer = document.getElementById("ytplayer");
     ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
+    ytplayer.loadVideoById({'videoId': video_id, 'startSeconds': data.start, 'endSeconds': data.end });
     ytplayer.playVideo();
   };
 
