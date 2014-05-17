@@ -17,7 +17,7 @@ var contentType = function(data){
 }
 var guessActionByContent = function(content) {
   var imageRegex = /.+(jpg|jpeg|gif|png)$/;
-  var videoRegex = /.+youtube\.com\/watch.+/;
+  var videoRegex = /.+youtube\.com.+/;
   var urlRegex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
 
 
@@ -72,10 +72,20 @@ var showVideo = function(data) {
 
   $("div.content").html("<div id='ytapiplayer'></div>");
 
-  var video_id = data.content.split('v=')[1];
-  var ampersandPosition = video_id.indexOf('&');
-  if(ampersandPosition != -1) {
-    video_id = video_id.substring(0, ampersandPosition);
+  var url = new URI(data.content);
+  var video_id;
+  var path = url.path();
+
+  if(path === "/watch") { // URL like youtube.com/watch?v=xMsT7aSk
+    video_id = data.content.split('v=')[1];
+    var ampersandPosition = video_id.indexOf('&');
+    if(ampersandPosition != -1) {
+      video_id = video_id.substring(0, ampersandPosition);
+    }
+  }
+  else { // URL like youtube.com/v/xMsT7aSk
+    var secondForwardSlashPosition = path.lastIndexOf('/');
+    video_id = path.substring(secondForwardSlashPosition + 1);
   }
 
   var height = $(window).height();
