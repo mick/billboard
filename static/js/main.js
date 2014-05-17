@@ -75,6 +75,7 @@ var showVideo = function(data) {
   var url = new URI(data.content);
   var video_id;
   var path = url.path();
+  var queries = url.search(true);
 
   if(path === "/watch") { // URL like youtube.com/watch?v=xMsT7aSk
     video_id = data.content.split('v=')[1];
@@ -93,7 +94,7 @@ var showVideo = function(data) {
   window.onYouTubePlayerReady = function(playerId) {
     ytplayer = document.getElementById("ytplayer");
     ytplayer.addEventListener("onStateChange", "onytplayerStateChange");
-    ytplayer.loadVideoById({'videoId': video_id, 'startSeconds': data.start, 'endSeconds': data.end });
+    ytplayer.loadVideoById({'videoId': video_id, 'startSeconds': queries.start, 'endSeconds': queries.end });
     ytplayer.playVideo();
   };
 
